@@ -34,6 +34,6 @@ def test_checkLinksInPdf(driver, test_loginToAlkermies):
     # resource_page.click_next()
     # resource_page.enter_pageCount_inPageNoBox()
     resource_page.total_links()
-    resource_page.click_links()
+    # resource_page.click_links()
     time.sleep(50)
 

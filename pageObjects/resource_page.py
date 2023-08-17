@@ -72,7 +72,7 @@ class resourcePage:
     def send_textInSearch(self):
         wait = WebDriverWait(self._driver, 10)
         wait.until(ec.presence_of_element_located(self.__searchBar))
-        self._driver.find_element(*self.__searchBar).send_keys("ARI-004743")
+        self._driver.find_element(*self.__searchBar).send_keys("ARI-004938")
         self._driver.find_element(*self.__searchBar).send_keys(Keys.ENTER)
 
     def click_aristada(self):
@@ -92,12 +92,18 @@ class resourcePage:
         wait.until(ec.visibility_of_all_elements_located(self.__all_links))
         links = self._driver.find_elements(*self.__all_links)
         print("No of links found:", len(links))
+        for link in links:
+                print("The href:",link.get_attribute("href"))
+           # print("The href",link.get_attribute("href"))
+
+
+
 
     def click_links(self):
         wait = WebDriverWait(self._driver, 20)
         wait.until(ec.visibility_of_all_elements_located(self.__all_links))
         links = self._driver.find_elements(*self.__all_links)
-        for link in links:
+        for link in range(1, len(links)):
             link.click()
 
         # for page_count_int in range(1, page_count_int):
