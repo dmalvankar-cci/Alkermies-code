@@ -12,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as ec
 class resourcePage:
 
 
-    __treatment = (By.XPATH, "(//div[@class='resources-icon'])[3]")
+    __treatment = (By.XPATH, "//a[normalize-space()='Treatment']")
     __all_links = (By.XPATH, "//section[@class='linkAnnotation']/a")
     __next_page = (By.XPATH, "//button[@id='next']")
     __pages = (By.XPATH, "//input[@id='pageNumber']")
@@ -21,8 +21,10 @@ class resourcePage:
     __aristada = (By.XPATH, "//a[@id='id-ARISTADA']")
     __eye = (By.XPATH, "//i[@class='fa fa-eye']")
     __eye_view = (By.XPATH, "//body[1]/app-root[1]/div[1]/dbc-basic-layout[1]/main[1]/dbc-resources[1]/div[1]/div[2]/div[1]/div[1]/div[3]/div[2]/div[1]/mat-tab-group[1]/div[1]/mat-tab-body[1]/div[1]/div[1]/div[1]/div[1]/div[5]/div[1]/div[2]/div[1]/span[1]/i[1]")
-    __branded = (By.XPATH, "//div[@id='mat-tab-label-22-1']//div[@class='mat-tab-label-content'][normalize-space()='BRANDED']")
+    __branded = (By.XPATH, "//div[@id='mat-tab-label-6-1']//div[@class='mat-tab-label-content'][normalize-space()='BRANDED']")
 
+
+    __pdf_id = (By.XPATH, "//small[@class='text-red-100 pl-3']")
     def __init__(self, driver: WebDriver):
         self._driver = driver
 
@@ -72,7 +74,7 @@ class resourcePage:
     def send_textInSearch(self):
         wait = WebDriverWait(self._driver, 10)
         wait.until(ec.presence_of_element_located(self.__searchBar))
-        self._driver.find_element(*self.__searchBar).send_keys("ARI-004938")
+        self._driver.find_element(*self.__searchBar).send_keys(self.get_pdf_id)
         self._driver.find_element(*self.__searchBar).send_keys(Keys.ENTER)
 
     def click_aristada(self):
@@ -94,7 +96,15 @@ class resourcePage:
         print("No of links found:", len(links))
         for link in links:
                 print("The href:",link.get_attribute("href"))
-           # print("The href",link.get_attribute("href"))
+
+    @property
+    def get_pdf_id(self):
+        wait = WebDriverWait(self._driver, 20)
+        wait.until(ec.presence_of_all_elements_located(self.__pdf_id))
+        pdfs = self._driver.find_elements(*self.__pdf_id)
+        # print("type of:", pdfs)
+        for pdf in pdfs:
+            return pdf.text
 
 
 
@@ -103,7 +113,7 @@ class resourcePage:
         wait = WebDriverWait(self._driver, 20)
         wait.until(ec.visibility_of_all_elements_located(self.__all_links))
         links = self._driver.find_elements(*self.__all_links)
-        for link in range(1, len(links)):
+        for link in links:
             link.click()
 
         # for page_count_int in range(1, page_count_int):
