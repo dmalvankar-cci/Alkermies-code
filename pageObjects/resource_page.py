@@ -90,8 +90,8 @@ class resourcePage:
         for page_count_int in range(1, page_count_int):
             next_btnClick = self._driver.find_element(*self.__next_page)
             next_btnClick.click()
-        wait = WebDriverWait(self._driver, 20)
-        wait.until(ec.visibility_of_all_elements_located(self.__all_links))
+        # wait = WebDriverWait(self._driver, 20)
+        # wait.until(ec.visibility_of_all_elements_located(self.__all_links))
         links = self._driver.find_elements(*self.__all_links)
         print("No of links found:", len(links))
         for link in links:
@@ -99,12 +99,13 @@ class resourcePage:
 
     @property
     def get_pdf_id(self):
-        wait = WebDriverWait(self._driver, 20)
-        wait.until(ec.presence_of_all_elements_located(self.__pdf_id))
+        # wait = WebDriverWait(self._driver, 10)
+        # wait.until(ec.presence_of_all_elements_located(self.__pdf_id))
         pdfs = self._driver.find_elements(*self.__pdf_id)
         # print("type of:", pdfs)
         for pdf in pdfs:
-            return pdf.text
+            if pdf.text != "":
+                return pdf.text
 
 
 
