@@ -29,17 +29,16 @@ def test_checkLinksInPdf(driver, test_loginToAlkermies):
 
     resource_page = resourcePage(driver)
 
-    # resource_page.click_eye()
+
     # time.sleep(10)
-    resource_page.click_treatment()
+    # resource_page.click_treatment()
+    resource_page.click_patient_population()
+    resource_page.click_patient_population_branded()
+    # resource_page.get_pdf_id()
     resource_page.send_textInSearch()
     resource_page.click_eye()
-    time.sleep(5)
-    # resource_page.click_branded()
-    # resource_page.get_pdf_id()
-    # resource_page.click_next()
-    # resource_page.enter_pageCount_inPageNoBox()
+    time.sleep(20)
     resource_page.total_links()
-    # resource_page.click_links()
-    time.sleep(5)
+    resource_page.click_links()
+    time.sleep(10)
 

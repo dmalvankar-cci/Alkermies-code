@@ -13,6 +13,7 @@ class resourcePage:
 
 
     __treatment = (By.XPATH, "//a[normalize-space()='Treatment']")
+    __patient_population = (By.XPATH, "//a[@href='#collapse-18']")
     __all_links = (By.XPATH, "//section[@class='linkAnnotation']/a")
     __next_page = (By.XPATH, "//button[@id='next']")
     __pages = (By.XPATH, "//input[@id='pageNumber']")
@@ -20,10 +21,9 @@ class resourcePage:
     __searchBar = (By.XPATH, "//input[@placeholder='Search']")
     __aristada = (By.XPATH, "//a[@id='id-ARISTADA']")
     __eye = (By.XPATH, "//i[@class='fa fa-eye']")
+    __patient_population_branded = (By.XPATH, "(//div[@class='mat-tab-label-content'][normalize-space()='BRANDED'])[2]")
     __eye_view = (By.XPATH, "//body[1]/app-root[1]/div[1]/dbc-basic-layout[1]/main[1]/dbc-resources[1]/div[1]/div[2]/div[1]/div[1]/div[3]/div[2]/div[1]/mat-tab-group[1]/div[1]/mat-tab-body[1]/div[1]/div[1]/div[1]/div[1]/div[5]/div[1]/div[2]/div[1]/span[1]/i[1]")
-    __branded = (By.XPATH, "//div[@id='mat-tab-label-6-1']//div[@class='mat-tab-label-content'][normalize-space()='BRANDED']")
-
-
+    __treatment_branded = (By.XPATH, "//div[@id='mat-tab-label-2-1']//div[@class='mat-tab-label-content'][normalize-space()='BRANDED']")
     __pdf_id = (By.XPATH, "//small[@class='text-red-100 pl-3']")
     def __init__(self, driver: WebDriver):
         self._driver = driver
@@ -34,10 +34,20 @@ class resourcePage:
         return self._driver.current_url
 
 
-    def click_branded(self):
+    def click_treatment_branded(self):
         wait = WebDriverWait(self._driver, 10)
-        wait.until(ec.presence_of_element_located(self.__branded))
-        self._driver.find_element(*self.__branded).click()
+        wait.until(ec.presence_of_element_located(self.__treatment_branded))
+        self._driver.find_element(*self.__treatment_branded).click()
+    def click_patient_population_branded(self):
+        wait = WebDriverWait(self._driver, 10)
+        wait.until(ec.presence_of_element_located(self.__patient_population_branded))
+        self._driver.find_element(*self.__patient_population_branded).click()
+
+
+    def click_patient_population(self):
+        wait = WebDriverWait(self._driver, 10)
+        wait.until(ec.presence_of_element_located(self.__patient_population))
+        self._driver.find_element(*self.__patient_population).click()
 
     def click_treatment(self):
         wait = WebDriverWait(self._driver, 10)
@@ -74,7 +84,7 @@ class resourcePage:
     def send_textInSearch(self):
         wait = WebDriverWait(self._driver, 10)
         wait.until(ec.presence_of_element_located(self.__searchBar))
-        self._driver.find_element(*self.__searchBar).send_keys(self.get_pdf_id)
+        self._driver.find_element(*self.__searchBar).send_keys(self.get_pdf_id())
         self._driver.find_element(*self.__searchBar).send_keys(Keys.ENTER)
 
     def click_aristada(self):
@@ -97,22 +107,28 @@ class resourcePage:
         for link in links:
                 print("The href:",link.get_attribute("href"))
 
-    @property
+
     def get_pdf_id(self):
-        # wait = WebDriverWait(self._driver, 10)
-        # wait.until(ec.presence_of_all_elements_located(self.__pdf_id))
+        wait = WebDriverWait(self._driver, 10)
+        wait.until(ec.presence_of_all_elements_located(self.__pdf_id))
         pdfs = self._driver.find_elements(*self.__pdf_id)
-        # print("type of:", pdfs)
+        print("Total pdfs:", len(pdfs))
         for pdf in pdfs:
             if pdf.text != "":
                 return pdf.text
+            if pdf.text == "":
+                print("PDF is not available")
+
+
+
+
 
 
 
 
     def click_links(self):
-        wait = WebDriverWait(self._driver, 20)
-        wait.until(ec.visibility_of_all_elements_located(self.__all_links))
+        # wait = WebDriverWait(self._driver, 20)
+        # wait.until(ec.visibility_of_all_elements_located(self.__all_links))
         links = self._driver.find_elements(*self.__all_links)
         for link in links:
             link.click()
